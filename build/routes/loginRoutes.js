@@ -2,6 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 exports.router = express_1.Router();
+function requireAuth(req, res, next) {
+    if (req.session && req.session.loggedIn) {
+        next();
+        return;
+    }
+    res.status(403).redirect('/login');
+}
 exports.router.get('/', (req, res) => {
     if (req.session && req.session.loggedIn) {
         res.send(`
@@ -52,4 +59,7 @@ exports.router.post('/login', (req, res) => {
 exports.router.get('/logout', (req, res) => {
     req.session = undefined;
     res.redirect('/login');
+});
+exports.router.get('/protected', requireAuth, (req, res) => {
+    res.send('Welcome to protected page, authorized user!');
 });
