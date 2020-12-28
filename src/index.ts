@@ -5,13 +5,13 @@ import cookieSesion from 'cookie-session';
 import {router} from './routes/loginRoutes';
 
 import './controllers/LoginController'
-import {router as loginRouter} from './controllers/decorators/controller';
+import {AppRouter} from './AppRouter';
 
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieSesion({keys: ['fjfdkfmdmd']}));
-app.use(loginRouter);
+app.use(AppRouter.getIstance());
 app.use(router);
 
 
